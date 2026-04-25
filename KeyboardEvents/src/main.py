@@ -1,25 +1,37 @@
 import flet as ft
+from flet import Page, Text, KeyboardEvent, Row
 
+def main(page: Page) -> None:
+    page.title = "Keyboard PRO"
+    page.spacing = 30
+    page.vertical_alignment = "center"
+    page.horizontal_alignment = "center"
 
-def main(page: ft.Page):
-    counter = ft.Text("0", size=50, data=0)
+    #Create the text views
+    key: Text = Text("Key", size = 30)
+    shift: Text = Text("Shift", size = 30, color = "red")
+    ctrl: Text = Text("Control", size = 30, color = "blue")
+    alt: Text = Text("Alt", size = 30, color = "green")
+    #space: Text = Text("Space", size = 30, color = "yellow") 
 
-    def increment_click(e):
-        counter.data += 1
-        counter.value = str(counter.data)
+    #Handling KeyboardEvent
+    def on_keyboard(e: KeyboardEvent) -> None:
+        key.value = e.key
+        shift.visible = e.shift
+        ctrl.visible = e.ctrl
+        alt.visible = e.alt
 
-    page.floating_action_button = ft.FloatingActionButton(
-        icon=ft.Icons.ADD, on_click=increment_click
-    )
+        print(e.data)
+        page.update()
+
+    #Link keyboard events to the page
+    page.on_keyboard_event = on_keyboard
+
+    #create a base page
     page.add(
-        ft.SafeArea(
-            expand=True,
-            content=ft.Container(
-                content=counter,
-                alignment=ft.Alignment.CENTER,
-            ),
-        )
+        Text("Press any combination of keys ..."),
+        Row(controls = [key, shift, ctrl, alt], alignment = ft.MainAxisAlignment.CENTER)
     )
 
-
-ft.run(main)
+if __name__ == "__main__":
+    ft.run(main)
