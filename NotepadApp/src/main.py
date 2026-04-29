@@ -4,8 +4,8 @@ def main(page: ft.Page):
     page.title = "Notepad App"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 20
+    #page.scroll = True - it seems that scroll is rendering the page unusable
     
-    # We use this to manage the file logic without the inheritance headache
     def save_text(e):
         with open("save.txt", "w") as f:
             f.write(textfield.value)
